@@ -1,7 +1,6 @@
 import { Sequelize } from 'sequelize';
-import 'dotenv/config'; // Esto carga las variables de entorno inmediatamente
- 
- 
+import 'dotenv/config';
+
 import { initUser } from '../models/User.js';
 import { initClient } from '../models/Client.js';
 import { initProduct } from '../models/Product.js';
@@ -14,8 +13,8 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST || 'localhost',
     dialect: 'postgres',
     port: parseInt(process.env.DB_PORT || '5432'),
-    logging: false, // Disables SQL logging for clarity
-    dialectOptions: {}
+    logging: false,
+    dialectOptions: {},
   }
 );
 
@@ -23,7 +22,6 @@ function initModels() {
   initUser(sequelize);
   initClient(sequelize);
   initProduct(sequelize);
-  // Define associations here if needed in future
 }
 
 async function testConnection() {
@@ -38,9 +36,8 @@ async function testConnection() {
 async function initDB() {
   await testConnection();
   initModels();
-  // Synchronize models to create tables if they don't exist
-  await sequelize.sync({ force: false }); 
-  console.log("Database & tables created/synchronized!");
+  await sequelize.sync({ force: false });
+  console.log('Database & tables created/synchronized!');
 }
 
 export { sequelize, initDB };
