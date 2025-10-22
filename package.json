@@ -1,5 +1,5 @@
 {
-  "name": "order-management-system",
+  "name": "sportsline-api",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -10,20 +10,26 @@
     "seed": "node --loader ts-node/esm src/database/seed.ts",
     "test": "jest",
     "test:watch": "jest --watch",
-    "seed:force": "node --loader ts-node/esm src/database/seed.ts --force",
-    "db:dump": "pg_dump -U postgres -d deliverydb > database/dump.sql"
+    "test:coverage": "jest --coverage",
+    "seed:force": "node --loader ts-node/esm src/database/seed.ts --force"
   },
   "keywords": [
+    "sportsline",
+    "sports",
     "orders",
+    "products",
+    "clients",
     "nodejs",
     "typescript",
     "express",
-    "postgresql"
+    "postgresql",
+    "jwt",
+    "sequelize"
   ],
-  "author": "",
+  "author": "SportsLine Team",
   "license": "ISC",
   "type": "module",
-  "description": "Order Management System",
+  "description": "SportsLine - Sistema de gestión de productos, clientes y pedidos para tienda deportiva",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
