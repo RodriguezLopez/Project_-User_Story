@@ -1,0 +1,2 @@
+// DAO index placeholder
+export {};

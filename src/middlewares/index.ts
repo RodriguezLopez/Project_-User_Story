@@ -1,0 +1,2 @@
+// Middlewares index placeholder
+export {};

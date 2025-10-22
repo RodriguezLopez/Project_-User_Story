@@ -1,33 +1,11 @@
 {
   "compilerOptions": {
-    // File Layout
-    "rootDir": "./src",  // <-- AJUSTADO
-    "outDir": "./dist",  // <-- AJUSTADO
-
-    // Environment Settings
-    "module": "NodeNext",
-    "target": "ES2022", // <-- AJUSTADO (o puedes dejar esnext)
-    "lib": ["esnext"],
-    "types": ["node"],
-
-    // Other Outputs
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
-
-    // Stricter Typechecking Options
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-
-    // Recommended Options
+    "target": "ES2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "verbatimModuleSyntax": true,
-    "isolatedModules": false, // <-- AJUSTADO
-    "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
-    "skipLibCheck": true,
-    "allowImportingTsExtensions": true,
-    "noEmit": false // <-- AJUSTADO
-  },
-  "include": ["src/**/*"] // Asegura que solo se compile la carpeta src
+    "skipLibCheck": true
+  }
 }
