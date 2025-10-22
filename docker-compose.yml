@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # Servicio PostgreSQL
+  postgres:
+    image: postgres:16-alpine
+    container_name: sportsline_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - sportsline_network
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Servicio Node.js
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sportsline_app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      PORT: ${PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+    ports:
+      - "${PORT}:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - sportsline_network
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    volumes:
+      - ./logs:/app/logs
+
+# Volúmenes persistentes
+volumes:
+  postgres_data:
+    driver: local
+
+# Red interna para comunicación entre servicios
+networks:
+  sportsline_network:
+    driver: bridge

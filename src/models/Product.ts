@@ -3,6 +3,7 @@ import type { Optional } from 'sequelize';
 
 interface ProductAttributes {
   id: string;
+  code: string;
   name: string;
   price: number;
   stock: number;
@@ -14,6 +15,7 @@ interface ProductCreationAttributes extends Optional<ProductAttributes, 'id' | '
 
 class Product extends Model<ProductAttributes, ProductCreationAttributes> implements ProductAttributes {
   public id!: string;
+  public code!: string;
   public name!: string;
   public price!: number;
   public stock!: number;
@@ -28,6 +30,11 @@ export function initProduct(sequelize: Sequelize) {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
+      },
+      code: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+        unique: true,
       },
       name: {
         type: DataTypes.STRING(150),

@@ -4,6 +4,13 @@ import 'dotenv/config';
 import { initUser } from '../models/User.js';
 import { initClient } from '../models/Client.js';
 import { initProduct } from '../models/Product.js';
+import { initOrder } from '../models/Order.js';
+import { initOrderItem } from '../models/OrderItem.js';
+import User from '../models/User.js';
+import Client from '../models/Client.js';
+import Product from '../models/Product.js';
+import Order from '../models/Order.js';
+import OrderItem from '../models/OrderItem.js';
 
 const dbHost = process.env.DB_HOST || 'localhost';
 const dbPort = parseInt(process.env.DB_PORT || '5432');
@@ -22,9 +29,29 @@ const sequelize = new Sequelize(dbName, dbUser, dbPass, {
 });
 
 function initModels() {
+  // Inicializar modelos
   initUser(sequelize);
   initClient(sequelize);
   initProduct(sequelize);
+  initOrder(sequelize);
+  initOrderItem(sequelize);
+
+  // Definir relaciones
+  // Order pertenece a Client
+  Order.belongsTo(Client, { foreignKey: 'clientId' });
+  Client.hasMany(Order, { foreignKey: 'clientId' });
+
+  // Order pertenece a User (vendedor)
+  Order.belongsTo(User, { foreignKey: 'userId' });
+  User.hasMany(Order, { foreignKey: 'userId' });
+
+  // Order tiene muchos OrderItems
+  Order.hasMany(OrderItem, { foreignKey: 'orderId' });
+  OrderItem.belongsTo(Order, { foreignKey: 'orderId' });
+
+  // OrderItem pertenece a Product
+  OrderItem.belongsTo(Product, { foreignKey: 'productId' });
+  Product.hasMany(OrderItem, { foreignKey: 'productId' });
 }
 
 async function testConnection() {

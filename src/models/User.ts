@@ -6,17 +6,21 @@ interface UserAttributes {
   name: string;
   email: string;
   password: string;
+  role: 'admin' | 'vendedor';
+  refreshToken?: string | null;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, 'id' | 'createdAt' | 'updatedAt'> {}
+interface UserCreationAttributes extends Optional<UserAttributes, 'id' | 'refreshToken' | 'createdAt' | 'updatedAt'> {}
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: string;
   public name!: string;
   public email!: string;
   public password!: string;
+  public role!: 'admin' | 'vendedor';
+  public refreshToken!: string | null;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -42,6 +46,15 @@ export function initUser(sequelize: Sequelize) {
       password: {
         type: DataTypes.STRING(255),
         allowNull: false,
+      },
+      role: {
+        type: DataTypes.ENUM('admin', 'vendedor'),
+        allowNull: false,
+        defaultValue: 'vendedor',
+      },
+      refreshToken: {
+        type: DataTypes.TEXT,
+        allowNull: true,
       },
     },
     {
