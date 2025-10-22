@@ -5,18 +5,21 @@ import { initUser } from '../models/User.js';
 import { initClient } from '../models/Client.js';
 import { initProduct } from '../models/Product.js';
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME || 'sportsline_db',
-  process.env.DB_USER || 'sportsline_user',
-  process.env.DB_PASSWORD || 'secret_password',
-  {
-    host: process.env.DB_HOST || 'localhost',
-    dialect: 'postgres',
-    port: parseInt(process.env.DB_PORT || '5432'),
-    logging: false,
-    dialectOptions: {},
-  }
-);
+const dbHost = process.env.DB_HOST || 'localhost';
+const dbPort = parseInt(process.env.DB_PORT || '5432');
+const dbName = process.env.DB_NAME || 'sportsline_db';
+const dbUser = process.env.DB_USER || 'sportsline_user';
+const dbPass = process.env.DB_PASSWORD || 'secret_password';
+
+console.log(`Connecting to Postgres host=${dbHost} port=${dbPort} db=${dbName} user=${dbUser}`);
+
+const sequelize = new Sequelize(dbName, dbUser, dbPass, {
+  host: dbHost,
+  dialect: 'postgres',
+  port: dbPort,
+  logging: false,
+  dialectOptions: {},
+});
 
 function initModels() {
   initUser(sequelize);
